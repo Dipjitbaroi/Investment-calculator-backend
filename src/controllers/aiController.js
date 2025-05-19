@@ -5,6 +5,7 @@ const { PAGINATION } = require('../config/constants');
 
 // Placeholder for the N8N webhook URL to send user replies to
 const N8N_REPLY_WEBHOOK_URL = process.env.N8N_REPLY_WEBHOOK_URL || 'YOUR_N8N_REPLY_WEBHOOK_URL_HERE';
+const N8N_WEBHOOK_ENABLED = process.env.N8N_WEBHOOK_ENABLED === 'true';
 
 // Handle incoming messages from the N8N Webhook
 exports.handleWebhookMessage = async (req, res, next) => {
@@ -123,12 +124,16 @@ exports.handleUserReply = async (req, res, next) => {
     });
 
     // 2. Trigger the N8N workflow to get the AI's response
-    if (N8N_REPLY_WEBHOOK_URL === 'YOUR_N8N_REPLY_WEBHOOK_URL_HERE') {
-        console.warn("N8N_REPLY_WEBHOOK_URL is not configured. Skipping AI response trigger.");
-        // Optionally return here or proceed without triggering AI
-         return res.status(201).json({
+    if (N8N_REPLY_WEBHOOK_URL === 'YOUR_N8N_REPLY_WEBHOOK_URL_HERE' || !N8N_WEBHOOK_ENABLED) {
+        const reason = N8N_REPLY_WEBHOOK_URL === 'YOUR_N8N_REPLY_WEBHOOK_URL_HERE' 
+            ? "N8N_REPLY_WEBHOOK_URL is not configured" 
+            : "N8N_WEBHOOK_ENABLED is set to false";
+        
+        console.warn(`Skipping AI response trigger: ${reason}`);
+        
+        return res.status(201).json({
             success: true,
-            message: 'User message saved. AI response trigger skipped (Webhook URL not configured).',
+            message: `User message saved. AI response trigger skipped (${reason}).`,
             data: userMessage
         });
     }
