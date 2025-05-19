@@ -26,7 +26,7 @@ exports.getEvents = async (req, res, next) => {
 
     const skip = (Number(page) - 1) * Number(limit);
 
-    // Build where clause
+  // Build where clause
     const where = {
       createdBy: req.user.id,
       startTime: { gte: start },
@@ -34,7 +34,10 @@ exports.getEvents = async (req, res, next) => {
     };
 
     if (eventType) {
-      where.eventType = eventType;
+      // Ensure we only allow valid event types now that job and estimate are removed
+      if (eventType === 'meeting' || eventType === 'other') {
+        where.eventType = eventType;
+      }
     }
 
     // Count total events matching query

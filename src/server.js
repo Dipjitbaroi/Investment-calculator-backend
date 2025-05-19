@@ -14,11 +14,10 @@ const { WebSocketServer, WebSocket } = require('ws');
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
-const jobRoutes = require('./routes/jobRoutes');
-const estimateRoutes = require('./routes/estimateRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const calendarRoutes = require('./routes/calendarRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const calculationRoutes = require('./routes/investmentCalculationRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -42,11 +41,10 @@ app.use(express.urlencoded({ extended: true }));
 // Define routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/jobs', jobRoutes);
-app.use('/api/estimates', estimateRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/calculations', calculationRoutes);
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

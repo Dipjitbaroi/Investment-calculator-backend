@@ -35,10 +35,6 @@ const router = express.Router();
  *                 type: string
  *                 format: uuid
  *                 description: The ID of the contact this message relates to.
- *               estimateId:
- *                 type: string
- *                 format: uuid
- *                 description: (Optional) The ID of the estimate this message relates to.
  *               userId:
  *                  type: string
  *                  format: uuid
@@ -87,10 +83,6 @@ router.use(protect); // Apply authentication middleware to all subsequent routes
  *                 type: string
  *                 format: uuid
  *                 description: The ID of the contact the user is replying about.
- *               estimateId:
- *                 type: string
- *                 format: uuid
- *                 description: (Optional) The ID of the specific estimate being discussed.
  *             required:
  *               - message
  *               - contactId
@@ -149,44 +141,6 @@ router.post('/reply', handleUserReply);
  */
 router.get('/conversation/contact/:contactId', getConversation);
 
-/**
- * @swagger
- * /api/ai/conversation/estimate/{estimateId}:
- *   get:
- *     summary: Get conversation history specifically related to an estimate
- *     tags: [AI Conversation]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: estimateId
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *         description: The ID of the estimate whose conversation history is needed.
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 count:
- *                   type: integer
- *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/AiMessage' # Assuming AiMessage schema exists
- *       400:
- *         description: Bad request (missing estimateId or estimate doesn't belong to contact)
- *       404:
- *         description: Estimate not found or access denied
- */
-router.get('/conversation/estimate/:estimateId', getConversation);
 
 /**
  * @swagger
@@ -216,14 +170,7 @@ router.get('/conversation/estimate/:estimateId', getConversation);
  *                       contactId:
  *                         type: string
  *                         format: uuid
- *                       estimateId:
- *                         type: string
- *                         format: uuid
- *                         nullable: true
  *                       contactName:
- *                         type: string
- *                         nullable: true
- *                       estimateLeadName:
  *                         type: string
  *                         nullable: true
  *                       lastMessage:

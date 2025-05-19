@@ -19,65 +19,26 @@ enum Role {
 }
 
 model User {
-  id          String      @id @default(uuid())
+  id          String                 @id @default(uuid())
   name        String
-  phoneNumber String      @unique
-  email       String?     @unique
+  phoneNumber String                 @unique
+  email       String?                @unique
   password    String
   companyName String?
   logo        String?
-  timezone    String      @default("UTC")
-  role        Role        @default(USER)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  timezone    String                 @default("UTC")
+  role        Role                   @default(USER)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
 
   // Relations
-  jobs        Job[]
-  estimates   Estimate[]
-  contacts    Contact[]
-  aiMessages  AiMessage[]
-}
-
-model Job {
-  id         String    @id @default(uuid())
-  name       String
-  address    String
-  price      Float
-  status     String    // "open", "in_progress", "completed", "cancelled"
-  startDate  DateTime?
-  endDate    DateTime?
-  clientId   String
-  createdBy  String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  // Relations
-  client     Contact   @relation(fields: [clientId], references: [id])
-  user       User      @relation(fields: [createdBy], references: [id])
-}
-
-model Estimate {
-  id         String    @id @default(uuid())
-  leadName   String
-  address    String
-  scope      String
-  bidAmount  Float
-  startDate  DateTime?
-  status     String    // "pending", "accepted", "rejected"
-  notes      String?
-  clientId   String
-  createdBy  String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  // Relations
-  client     Contact   @relation(fields: [clientId], references: [id])
-  user       User      @relation(fields: [createdBy], references: [id])
-  aiMessages AiMessage[]
+  contacts               Contact[]
+  aiMessages             AiMessage[]
+  investmentCalculations InvestmentCalculation[]
 }
 
 model Contact {
-  id            String      @id @default(uuid())
+  id            String                 @id @default(uuid())
   name          String
   phoneNumber   String
   email         String?
@@ -87,14 +48,13 @@ model Contact {
   status        String      // "lead", "client", "former_client"
   pipelineStage String?
   createdBy     String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
 
   // Relations
-  user          User        @relation(fields: [createdBy], references: [id])
-  jobs          Job[]
-  estimates     Estimate[]
-  aiMessages    AiMessage[]
+  user                   User                     @relation(fields: [createdBy], references: [id])
+  aiMessages             AiMessage[]
+  investmentCalculations InvestmentCalculation[]
 }
 
 model CalendarEvent {
@@ -104,8 +64,8 @@ model CalendarEvent {
   startTime   DateTime
   endTime     DateTime
   location    String?
-  eventType   String    // "job", "estimate", "meeting", "other"
-  relatedId   String?   // ID of related job or estimate
+  eventType   String    // "meeting", "other"
+  relatedId   String?   // ID of related entity
   createdBy   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -117,11 +77,33 @@ model AiMessage {
   senderType  String    // "AI" or "USER"
   userId      String    // The user interacting or receiving the message
   contactId   String?   // Link to the relevant contact
-  estimateId  String?   // Link to the relevant estimate (optional)
   createdAt   DateTime  @default(now())
 
   // Relations
   user        User      @relation(fields: [userId], references: [id])
   contact     Contact?  @relation(fields: [contactId], references: [id])
-  estimate    Estimate? @relation(fields: [estimateId], references: [id])
+}
+
+model InvestmentCalculation {
+  id                    String    @id @default(uuid())
+  propertyType          String    // e.g., "Single Family Residence"
+  marketArea            String    // e.g., "Indianapolis, IN"
+  investmentAmount      Float     // e.g., 100000
+  holdPeriod            Int       // in years, e.g., 5
+  annualReturnRate      Float     // e.g., 10.0 (percentage)
+  propertyManagementFee Float     // e.g., 8.0 (percentage)
+  vacancyRate           Float     // e.g., 5.0 (percentage)
+  monthlyCashFlow       Float     // e.g., 725
+  annualCashFlow        Float     // e.g., 8700
+  totalReturn           Float     // e.g., 43500
+  roi                   Float     // e.g., 43.5 (percentage)
+  notes                 String?
+  contactId             String    // Link to the relevant contact
+  createdBy             String    // User who created this calculation
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relations
+  contact               Contact   @relation(fields: [contactId], references: [id])
+  user                  User      @relation(fields: [createdBy], references: [id])
 }

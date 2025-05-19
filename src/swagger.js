@@ -24,102 +24,6 @@ const options = {
   apis: ['./src/routes/*.js'], // Path to the API routes
   components: {
     schemas: {
-      Estimate: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The estimate ID'
-          },
-          leadName: {
-            type: 'string',
-            description: 'The name of the lead'
-          },
-          address: {
-            type: 'string',
-            description: 'The address of the lead'
-          },
-          scope: {
-            type: 'string',
-            description: 'The scope of the estimate'
-          },
-          bidAmount: {
-            type: 'number',
-            format: 'float',
-            description: 'The bid amount'
-          },
-          startDate: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The start date'
-          },
-          status: {
-            type: 'string',
-            description: 'The status of the estimate (pending, accepted, rejected)'
-          },
-          notes: {
-            type: 'string',
-            description: 'The notes for the estimate'
-          },
-          clientId: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The ID of the client'
-          },
-          createdBy: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The ID of the user who created the estimate (Only applicable for admin users)'
-          },
-          createdAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The date and time the estimate was created'
-          },
-          updatedAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The date and time the estimate was updated'
-          },
-          client: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                format: 'uuid',
-                description: 'The ID of the client'
-              },
-              name: {
-                type: 'string',
-                description: 'The name of the client'
-              },
-              phoneNumber: {
-                type: 'string',
-                description: 'The phone number of the client'
-              },
-              email: {
-                type: 'string',
-                format: 'email',
-                description: 'The email of the client'
-              }
-            },
-            required: [
-              'id',
-              'name',
-              'phoneNumber'
-            ]
-          }
-        },
-        required: [
-          'leadName',
-          'address',
-          'scope',
-          'bidAmount',
-          'clientId',
-          'createdBy'
-        ]
-      },
       User: {
         type: 'object',
         properties: {
@@ -171,99 +75,6 @@ const options = {
         required: [
           'name',
           'phoneNumber'
-        ]
-      },
-      Job: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The job ID'
-          },
-          name: {
-            type: 'string',
-            description: 'The name of the job'
-          },
-          address: {
-            type: 'string',
-            description: 'The address of the job'
-          },
-          price: {
-            type: 'number',
-            format: 'float',
-            description: 'The price of the job'
-          },
-          status: {
-            type: 'string',
-            description: 'The status of the job (open, in_progress, completed, cancelled)'
-          },
-          startDate: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The start date of the job'
-          },
-          endDate: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The end date of the job'
-          },
-          clientId: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The ID of the client'
-          },
-          createdBy: {
-            type: 'string',
-            format: 'uuid',
-            description: 'The ID of the user who created the job (Only applicable for admin users)'
-          },
-          createdAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The date and time the job was created'
-          },
-          updatedAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'The date and time the job was updated'
-          },
-          client: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                format: 'uuid',
-                description: 'The ID of the client'
-              },
-              name: {
-                type: 'string',
-                description: 'The name of the client'
-              },
-              phoneNumber: {
-                type: 'string',
-                description: 'The phone number of the client'
-              },
-              email: {
-                type: 'string',
-                format: 'email',
-                description: 'The email of the client'
-              }
-            },
-            required: [
-              'id',
-              'name',
-              'phoneNumber'
-            ]
-          }
-        },
-        required: [
-          'name',
-          'address',
-          'price',
-          'status',
-          'clientId',
-          'createdBy'
         ]
       },
       Contact: {
@@ -364,7 +175,7 @@ const options = {
           },
           eventType: {
             type: 'string',
-            description: 'The event type of the calendar event (job, estimate, meeting, other)'
+            description: 'The event type of the calendar event (meeting, other)'
           },
           relatedId: {
             type: 'string',
@@ -423,12 +234,6 @@ const options = {
             nullable: true,
             description: 'The ID of the contact this message relates to'
           },
-          estimateId: {
-            type: 'string',
-            format: 'uuid',
-            nullable: true,
-            description: 'The ID of the estimate this message relates to (optional)'
-          },
           createdAt: {
             type: 'string',
             format: 'date-time',
@@ -450,13 +255,6 @@ const options = {
               name: { type: 'string' }
             },
             description: 'Basic info of the associated contact (if included in response)'
-          },
-          estimate: {
-             type: 'object',
-            properties: {
-              id: { type: 'string', format: 'uuid' }
-            },
-            description: 'Basic info of the associated estimate (if included in response)'
           }
         },
         required: [
@@ -466,7 +264,146 @@ const options = {
           'userId',
           'createdAt'
           // contactId is required for saving, but might be null in some contexts? Adjust if needed.
-          // estimateId is optional
+        ]
+      },
+      InvestmentCalculation: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The investment calculation ID'
+          },
+          propertyType: {
+            type: 'string',
+            description: 'Type of property (e.g., "Single Family Residence")'
+          },
+          marketArea: {
+            type: 'string',
+            description: 'Market area (e.g., "Indianapolis, IN")'
+          },
+          investmentAmount: {
+            type: 'number',
+            format: 'float',
+            description: 'Investment amount (e.g., 100000)'
+          },
+          holdPeriod: {
+            type: 'integer',
+            description: 'Hold period in years (e.g., 5)'
+          },
+          annualReturnRate: {
+            type: 'number',
+            format: 'float',
+            description: 'Annual return rate as percentage (e.g., 10.0)'
+          },
+          propertyManagementFee: {
+            type: 'number',
+            format: 'float',
+            description: 'Property management fee as percentage (e.g., 8.0)'
+          },
+          vacancyRate: {
+            type: 'number',
+            format: 'float',
+            description: 'Vacancy rate as percentage (e.g., 5.0)'
+          },
+          monthlyCashFlow: {
+            type: 'number',
+            format: 'float',
+            description: 'Monthly cash flow (e.g., 725)'
+          },
+          annualCashFlow: {
+            type: 'number',
+            format: 'float',
+            description: 'Annual cash flow (e.g., 8700)'
+          },
+          totalReturn: {
+            type: 'number',
+            format: 'float',
+            description: 'Total return (e.g., 43500)'
+          },
+          roi: {
+            type: 'number',
+            format: 'float',
+            description: 'ROI as percentage (e.g., 43.5)'
+          },
+          notes: {
+            type: 'string',
+            description: 'Additional notes'
+          },
+          contactId: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The ID of the contact this calculation is for'
+          },
+          createdBy: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The ID of the user who created this calculation'
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the calculation was created'
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the calculation was updated'
+          },
+          contact: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the contact'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the contact'
+              },
+              phoneNumber: {
+                type: 'string',
+                description: 'The phone number of the contact'
+              },
+              email: {
+                type: 'string',
+                format: 'email',
+                description: 'The email of the contact'
+              }
+            },
+            description: 'Basic info of the associated contact (if included in response)'
+          },
+          user: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the user'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the user'
+              }
+            },
+            description: 'Basic info of the associated user (if included in response)'
+          }
+        },
+        required: [
+          'propertyType',
+          'marketArea',
+          'investmentAmount',
+          'holdPeriod',
+          'annualReturnRate',
+          'propertyManagementFee',
+          'vacancyRate',
+          'monthlyCashFlow',
+          'annualCashFlow',
+          'totalReturn',
+          'roi',
+          'contactId',
+          'createdBy'
         ]
       }
     }
