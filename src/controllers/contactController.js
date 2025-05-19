@@ -113,9 +113,13 @@ exports.getContactById = async (req, res, next) => {
 // Create a new contact
 exports.createContact = async (req, res, next) => {
   try {
+    // Generate a random 4-digit PIN
+    const pin = Math.floor(1000 + Math.random() * 9000).toString();
+    
     const contactData = {
       ...req.body,
-      createdBy: req.user.id
+      createdBy: req.user.id,
+      pin: pin
     };
 
     // Ensure tags is an array
@@ -305,6 +309,51 @@ exports.updatePipelineStage = async (req, res, next) => {
       success: true,
       data: contact,
       message: 'Pipeline stage updated successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get contact PIN by phone number
+exports.getContactPinByPhone = async (req, res, next) => {
+  try {
+    const { phoneNumber } = req.body;
+
+    if (!phoneNumber) {
+      return next(new AppError('Phone number is required', 400));
+    }
+
+    // Find contact by phone number
+    const contact = await prisma.contact.findFirst({
+      where: {
+        phoneNumber,
+        createdBy: req.user.id
+      },
+      select: {
+        id: true,
+        name: true,
+        phoneNumber: true,
+        pin: true
+      }
+    });
+
+    if (!contact) {
+      return next(new AppError('Contact not found with this phone number', 404));
+    }
+
+    if (!contact.pin) {
+      return next(new AppError('PIN not set for this contact', 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: contact.id,
+        name: contact.name,
+        phoneNumber: contact.phoneNumber,
+        pin: contact.pin
+      }
     });
   } catch (error) {
     next(error);
