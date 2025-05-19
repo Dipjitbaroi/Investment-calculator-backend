@@ -4,7 +4,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Get Connected API',
+      title: 'Ultimate Investment Calculator API',
       version: '1.0.0',
       description: 'API documentation for the Get Connected application',
     },
