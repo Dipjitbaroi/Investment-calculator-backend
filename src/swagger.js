@@ -538,6 +538,152 @@ const options = {
           'contactId',
           'createdBy'
         ]
+      },
+      Video: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The video ID'
+          },
+          title: {
+            type: 'string',
+            description: 'Title of the video'
+          },
+          videoUrl: {
+            type: 'string',
+            description: 'URL to the video (YouTube, Vimeo, or hosted URL)'
+          },
+          thumbnailUrl: {
+            type: 'string',
+            description: 'URL to the video thumbnail image'
+          },
+          isPublished: {
+            type: 'boolean',
+            description: 'Whether the video is publicly available'
+          },
+          createdBy: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The ID of the user who created the video'
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the video was created'
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the video was updated'
+          },
+          user: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the user'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the user'
+              }
+            },
+            description: 'Basic info of the associated user (if included in response)'
+          }
+        },
+        required: [
+          'title',
+          'videoUrl',
+          'createdBy'
+        ]
+      },
+      VideoFeedback: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The video feedback ID'
+          },
+          videoId: {
+            type: 'string',
+            format: 'uuid',
+            description: 'ID of the video this feedback is for'
+          },
+          responses: {
+            type: 'object',
+            description: 'JSON object containing question/answer pairs'
+          },
+          contactId: {
+            type: 'string',
+            format: 'uuid',
+            description: 'Optional ID of the contact this feedback is for'
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the feedback was created'
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the feedback was updated'
+          },
+          video: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the video'
+              },
+              title: {
+                type: 'string',
+                description: 'The title of the video'
+              },
+              videoUrl: {
+                type: 'string',
+                description: 'URL to the video'
+              },
+              thumbnailUrl: {
+                type: 'string',
+                description: 'URL to the video thumbnail'
+              }
+            },
+            description: 'Basic info of the associated video (if included in response)'
+          },
+          contact: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the contact'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the contact'
+              },
+              phoneNumber: {
+                type: 'string',
+                description: 'The phone number of the contact'
+              },
+              email: {
+                type: 'string',
+                format: 'email',
+                description: 'The email of the contact'
+              }
+            },
+            description: 'Basic info of the associated contact (if included in response)'
+          }
+        },
+        required: [
+          'videoId',
+          'responses'
+        ]
       }
     }
   }
