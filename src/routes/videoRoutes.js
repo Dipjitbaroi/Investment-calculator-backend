@@ -7,7 +7,7 @@ const {
   deleteVideo,
   togglePublishStatus
 } = require('../controllers/videoController');
-const { protect, restrictTo } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 

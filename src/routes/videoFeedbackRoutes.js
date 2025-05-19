@@ -8,7 +8,7 @@ const {
   getVideoFeedbacks,
   getContactFeedbacks
 } = require('../controllers/videoFeedbackController');
-const { protect, restrictTo } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -121,7 +121,7 @@ const router = express.Router();
 // Public route for creating feedback, admin-only for getting all feedbacks
 router.route('/')
   .post(createFeedback)
-  .get(protect, restrictTo('ADMIN'), getAllFeedbacks);
+  .get(protect, authorize('ADMIN'), getAllFeedbacks);
 
 /**
  * @swagger
@@ -229,9 +229,9 @@ router.route('/')
  */
 // Admin-only routes for getting, updating, and deleting specific feedback
 router.route('/:id')
-  .get(protect, restrictTo('ADMIN'), getFeedbackById)
-  .put(protect, restrictTo('ADMIN'), updateFeedback)
-  .delete(protect, restrictTo('ADMIN'), deleteFeedback);
+  .get(protect, authorize('ADMIN'), getFeedbackById)
+  .put(protect, authorize('ADMIN'), updateFeedback)
+  .delete(protect, authorize('ADMIN'), deleteFeedback);
 
 /**
  * @swagger
@@ -299,7 +299,7 @@ router.route('/:id')
  *         description: Video not found
  */
 // Admin-only route for getting all feedbacks for a specific video
-router.get('/videos/:videoId', protect, restrictTo('ADMIN'), getVideoFeedbacks);
+router.get('/videos/:videoId', protect, authorize('ADMIN'), getVideoFeedbacks);
 
 /**
  * @swagger
@@ -367,6 +367,6 @@ router.get('/videos/:videoId', protect, restrictTo('ADMIN'), getVideoFeedbacks);
  *         description: Contact not found
  */
 // Admin-only route for getting all feedbacks from a specific contact
-router.get('/contacts/:contactId', protect, restrictTo('ADMIN'), getContactFeedbacks);
+router.get('/contacts/:contactId', protect, authorize('ADMIN'), getContactFeedbacks);
 
 module.exports = router;
