@@ -405,6 +405,139 @@ const options = {
           'contactId',
           'createdBy'
         ]
+      },
+      InvestorQuestionnaire: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The investor questionnaire ID'
+          },
+          isAccreditedInvestor: {
+            type: 'boolean',
+            description: 'Whether the investor is accredited'
+          },
+          hasInvestedBefore: {
+            type: 'boolean',
+            description: 'Whether the investor has invested in real estate before'
+          },
+          lookingTimeframe: {
+            type: 'string',
+            description: 'How long they have been looking to invest in real estate'
+          },
+          primaryInvestmentGoal: {
+            type: 'string',
+            description: 'Primary investment goal'
+          },
+          investmentTimeline: {
+            type: 'string',
+            description: 'Investment timeline'
+          },
+          capitalToInvest: {
+            type: 'string',
+            description: 'How much capital they are looking to invest'
+          },
+          useFinancing: {
+            type: 'string',
+            description: 'Whether they plan to use financing'
+          },
+          marketsInterested: {
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+            description: 'Markets they are interested in investing in'
+          },
+          propertyTypesInterested: {
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+            description: 'Property types they are interested in'
+          },
+          investmentTimeframe: {
+            type: 'string',
+            description: 'When they plan to make their first/next investment'
+          },
+          notes: {
+            type: 'string',
+            description: 'Additional notes'
+          },
+          contactId: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The ID of the contact this questionnaire is for'
+          },
+          createdBy: {
+            type: 'string',
+            format: 'uuid',
+            description: 'The ID of the user who created this questionnaire'
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the questionnaire was created'
+          },
+          updatedAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'The date and time the questionnaire was updated'
+          },
+          contact: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the contact'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the contact'
+              },
+              phoneNumber: {
+                type: 'string',
+                description: 'The phone number of the contact'
+              },
+              email: {
+                type: 'string',
+                format: 'email',
+                description: 'The email of the contact'
+              }
+            },
+            description: 'Basic info of the associated contact (if included in response)'
+          },
+          user: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                format: 'uuid',
+                description: 'The ID of the user'
+              },
+              name: {
+                type: 'string',
+                description: 'The name of the user'
+              }
+            },
+            description: 'Basic info of the associated user (if included in response)'
+          }
+        },
+        required: [
+          'isAccreditedInvestor',
+          'hasInvestedBefore',
+          'lookingTimeframe',
+          'primaryInvestmentGoal',
+          'investmentTimeline',
+          'capitalToInvest',
+          'useFinancing',
+          'marketsInterested',
+          'propertyTypesInterested',
+          'investmentTimeframe',
+          'contactId',
+          'createdBy'
+        ]
       }
     }
   }

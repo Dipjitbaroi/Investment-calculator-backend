@@ -35,6 +35,7 @@ model User {
   contacts               Contact[]
   aiMessages             AiMessage[]
   investmentCalculations InvestmentCalculation[]
+  investorQuestionnaires InvestorQuestionnaire[]
 }
 
 model Contact {
@@ -55,6 +56,7 @@ model Contact {
   user                   User                     @relation(fields: [createdBy], references: [id])
   aiMessages             AiMessage[]
   investmentCalculations InvestmentCalculation[]
+  investorQuestionnaires InvestorQuestionnaire[]
 }
 
 model CalendarEvent {
@@ -106,4 +108,27 @@ model InvestmentCalculation {
   // Relations
   contact               Contact   @relation(fields: [contactId], references: [id])
   user                  User      @relation(fields: [createdBy], references: [id])
+}
+
+model InvestorQuestionnaire {
+  id                      String    @id @default(uuid())
+  isAccreditedInvestor    Boolean
+  hasInvestedBefore       Boolean
+  lookingTimeframe        String    // How long have you been looking to invest in real estate?
+  primaryInvestmentGoal   String    // What is your primary investment goal?
+  investmentTimeline      String    // What is your investment timeline?
+  capitalToInvest         String    // How much capital are you looking to invest in the next 12 months?
+  useFinancing            String    // Are you planning to use financing for your investment?
+  marketsInterested       String[]  // Which markets are you most interested in investing?
+  propertyTypesInterested String[]  // What property types are you interested in?
+  investmentTimeframe     String    // When are you looking to make your first (or next) investment?
+  notes                   String?
+  contactId               String    // Link to the relevant contact
+  createdBy               String    // User who created this questionnaire
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  // Relations
+  contact                 Contact   @relation(fields: [contactId], references: [id])
+  user                    User      @relation(fields: [createdBy], references: [id])
 }

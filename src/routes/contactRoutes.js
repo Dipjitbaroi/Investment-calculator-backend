@@ -10,6 +10,7 @@ const {
   updatePipelineStage 
 } = require('../controllers/contactController');
 const { getContactCalculations } = require('../controllers/investmentCalculationController');
+const { getContactQuestionnaires } = require('../controllers/investorQuestionnaireController');
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();
@@ -297,5 +298,71 @@ router.put('/:id/pipeline-stage', updatePipelineStage);
  *         description: Contact not found or access denied
  */
 router.get('/:contactId/calculations', getContactCalculations);
+
+/**
+ * @swagger
+ * /api/contacts/{contactId}/questionnaires:
+ *   get:
+ *     summary: Get all investor questionnaires for a specific contact
+ *     tags: [Investor Questionnaires]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: contactId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Contact ID
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of items per page
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *         description: Field to sort by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Sort order
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/InvestorQuestionnaire'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     pages:
+ *                       type: integer
+ *       404:
+ *         description: Contact not found or access denied
+ */
+router.get('/:contactId/questionnaires', getContactQuestionnaires);
 
 module.exports = router;
