@@ -49,6 +49,7 @@ model Contact {
   notes         String?
   status        String      // "lead", "client", "former_client"
   pipelineStage String?
+  pin           String?     // 4-digit PIN for contact verification
   createdBy     String
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @updatedAt

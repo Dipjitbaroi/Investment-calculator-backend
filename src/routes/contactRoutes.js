@@ -7,7 +7,8 @@ const {
   deleteContact, 
   addTags, 
   removeTags, 
-  updatePipelineStage 
+  updatePipelineStage,
+  getContactPinByPhone
 } = require('../controllers/contactController');
 const { getContactCalculations } = require('../controllers/investmentCalculationController');
 const { getContactQuestionnaires } = require('../controllers/investorQuestionnaireController');
@@ -431,5 +432,49 @@ router.get('/:contactId/questionnaires', getContactQuestionnaires);
  *         description: Contact not found or access denied
  */
 router.get('/:contactId/feedbacks', getContactFeedbacks);
+
+/**
+ * @swagger
+ * /api/contacts/pin:
+ *   post:
+ *     summary: Get contact PIN by phone number
+ *     tags: [Contacts]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phoneNumber:
+ *                 type: string
+ *                 required: true
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved PIN
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     phoneNumber:
+ *                       type: string
+ *                     pin:
+ *                       type: string
+ *       404:
+ *         description: Contact not found or PIN not set
+ */
+router.post('/pin', getContactPinByPhone);
 
 module.exports = router;
