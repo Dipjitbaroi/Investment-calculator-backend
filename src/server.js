@@ -19,6 +19,8 @@ const calendarRoutes = require('./routes/calendarRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const calculationRoutes = require('./routes/investmentCalculationRoutes');
 const questionnaireRoutes = require('./routes/investorQuestionnaireRoutes');
+const videoRoutes = require('./routes/videoRoutes');
+const feedbackRoutes = require('./routes/videoFeedbackRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -47,6 +49,8 @@ app.use('/api/calendar', calendarRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/calculations', calculationRoutes);
 app.use('/api/questionnaires', questionnaireRoutes);
+app.use('/api/videos', videoRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

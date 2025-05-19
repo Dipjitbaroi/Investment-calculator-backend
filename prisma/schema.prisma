@@ -36,6 +36,7 @@ model User {
   aiMessages             AiMessage[]
   investmentCalculations InvestmentCalculation[]
   investorQuestionnaires InvestorQuestionnaire[]
+  videos                 Video[]
 }
 
 model Contact {
@@ -57,6 +58,7 @@ model Contact {
   aiMessages             AiMessage[]
   investmentCalculations InvestmentCalculation[]
   investorQuestionnaires InvestorQuestionnaire[]
+  videoFeedbacks         VideoFeedback[]
 }
 
 model CalendarEvent {
@@ -67,7 +69,7 @@ model CalendarEvent {
   endTime     DateTime
   location    String?
   eventType   String    // "meeting", "other"
-  relatedId   String?   // ID of related entity
+  relatedId   String?   // ID of related entity (can reference Video, Contact, etc.)
   createdBy   String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -131,4 +133,32 @@ model InvestorQuestionnaire {
   // Relations
   contact                 Contact   @relation(fields: [contactId], references: [id])
   user                    User      @relation(fields: [createdBy], references: [id])
+}
+
+model Video {
+  id                String          @id @default(uuid())
+  title             String          // Title of the video
+  videoUrl          String          // URL to the video (YouTube, Vimeo, or hosted URL)
+  thumbnailUrl      String?         // URL to the video thumbnail image
+  isPublished       Boolean         @default(true) // Whether the video is publicly available
+  createdBy         String          // User who created this video
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Relations
+  user              User            @relation(fields: [createdBy], references: [id])
+  feedbacks         VideoFeedback[]
+}
+
+model VideoFeedback {
+  id                String    @id @default(uuid())
+  videoId           String    // Reference to the Video model
+  responses         Json      // Store all question/answer pairs as JSON
+  contactId         String?   // Optional link to a contact
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  video             Video     @relation(fields: [videoId], references: [id])
+  contact           Contact?  @relation(fields: [contactId], references: [id])
 }
